@@ -6,4 +6,9 @@ lazy val root = (project in file("."))
   .settings(
     name := "traitement_distribues_tp"
   )
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.5.1"
+
+libraryDependencies ++= Seq(
+  "org.apache.spark" %% "spark-sql" % "3.5.1",
+  "org.mongodb.spark" %% "mongo-spark-connector" % "10.3.0",
+  "org.apache.spark" %% "spark-core" % "3.5.1"
+)
