@@ -37,7 +37,10 @@ dist/*
 
 
 project/project/
+SparkDO5/project/project/
+
 project/target/
+
 project/.bloop
 project/metals.sbt
 
