@@ -10,5 +10,7 @@ lazy val root = (project in file("."))
     idePackagePrefix := Some("polytech.umontpellier.fr")
   )
 
-
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.2.0"
+libraryDependencies ++= Seq(
+  "org.apache.spark" %% "spark-sql" % sparkVersion,
+  "org.mongodb.spark" %% "mongo-spark-connector" % "10.2.2",
+)
