@@ -38,6 +38,28 @@ object Mongo {
     println(s"Count of records where the number of followers >1000: ${df.filter(col("followers") > 1000).count()}")
     println(s"Count of records where the number of followers <1000: ${df.filter(col("followers") < 1000).count()}")
 
+    println(s"Count of records where the text field contains the word 'threat': ${df.filter(col("text").contains("threat")).count()}")
+
+    val newDf = df.withColumn("followers/following", col("followers") / col("following"))
+    newDf.select("followers", "following", "followers/following").show(5)
+
+
+    println(s"Count of records with username = 'alexis': ${df.filter(col("username") === "alexis").count()}")
+    println("inserting a new document to the MongoDB collection")
+    val newDocument = spark.createDataFrame(Seq(
+      (1000, 10, Array.empty[String], 4617719649453637632L, 6, "", "https://test.com", "Hello", 296729, 1.674525794E9, "alexis")
+    )).toDF("followers", "following", "hashtags", "id", "listed_count", "location", "source", "text", "tweet_count", "tweet_date", "username")
+    // save the new document to the MongoDB collection
+    newDocument.write
+      .format("mongodb")
+      .option("database", "spark")
+      .option("collection", "spark")
+      .mode("append")
+      .save()
+
+    println(s"Count of records with username = 'alexis': ${df.filter(col("username") === "alexis").count()}")
+
+
     val programElapsedTime = (System.nanoTime() - programStartTime) / 1e9
     println(s"\nProgram execution time: $programElapsedTime seconds")
     spark.stop()
