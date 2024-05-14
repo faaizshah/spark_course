@@ -23,15 +23,15 @@ object Mongo {
       .option("collection", "twitter")
       .load()
 
-    val limited = df.drop("_id").limit(500)
+//    val limited = df.drop("_id").limit(500)
 
-    limited.write
+    val found = df.filter(df("text").contains("threat"))
+    found.write
       .format("mongodb")
-      .mode("append")
+      .mode("overwrite")
       .option("database", "do5")
-      .option("collection", "twitter")
+      .option("collection", "twitter-threats")
       .save()
-
-    println(df.count())
+    println(s"Number of tweets containing the word 'threat': ${found.count()}")
   }
 }
