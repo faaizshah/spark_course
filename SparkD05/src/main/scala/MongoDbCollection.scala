@@ -13,14 +13,16 @@ object MongoDbCollection {
 
     println(df.count())
 
-    val limited = df.drop("_id").limit(500)
+    val found = df.filter(df("text").contains("threat"))
 
-    limited.write
+    found.write
       .format("mongodb")
-      .mode("append")
+      .mode("overwrite")
       .option("database", "Spark")
       .option("collection", "tweets")
       .save()
+
+    println(s"${found.count()} Tweets contains threat word")
   }
 
 }
