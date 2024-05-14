@@ -26,9 +26,6 @@ SparkDO5/.idea
 SparkDO5/target/
 target/
 
-
-
-
 # sbt specific
 .cache/
 .history/
