@@ -1,0 +1,46 @@
+
+.vscode/
+
+### IntelliJ IDEA ###
+.idea*
+*.iws
+*.iml
+*.ipr
+*/out/**
+.DS_Store
+
+
+
+# vscode
+.vscode/
+.bsp/
+.bloop/
+.metals/
+*.class
+*.log
+.scalafmt.conf
+
+.idea
+.bsp
+
+
+target/
+
+
+# sbt specific
+.cache/
+.history/
+
+.lib/
+dist/*
+
+
+
+project/project/
+project/target/
+project/.bloop
+project/metals.sbt
+
+target/
+kubernetes/
+
