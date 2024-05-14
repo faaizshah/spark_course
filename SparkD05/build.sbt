@@ -2,7 +2,7 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "2.12.14"
 
-val sparkVersion = "3.2.0"
+val sparkVersion = "3.5.1"
 
 lazy val root = (project in file("."))
   .settings(
@@ -11,4 +11,4 @@ lazy val root = (project in file("."))
   )
 
 
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.2.0"
+libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion
