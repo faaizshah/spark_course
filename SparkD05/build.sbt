@@ -2,7 +2,7 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "2.12.14"
 
-val sparkVersion = "3.5.1"
+val sparkVersion = "3.2.0"
 
 lazy val root = (project in file("."))
   .settings(
@@ -11,4 +11,8 @@ lazy val root = (project in file("."))
   )
 
 
-libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion
+libraryDependencies ++= Seq(
+  "org.apache.spark" %% "spark-sql" % sparkVersion,
+  "org.apache.spark" %% "spark-sql" % sparkVersion,
+  "org.mongodb.spark" %% "mongo-spark-connector" % "10.2.2"
+)
