@@ -52,7 +52,33 @@ object StackOverflow_Yann_Pomie {
     val highScorePosts = df
       .filter($"score" > 20)
 
-    highScorePosts.sort($"score".desc).show(20)
+    // Register the DataFrame as a SQL temporary view
+    df.createOrReplaceTempView("stackoverflow")
+
+    // Query 1: Top 5 highest scores
+    val top5Scores = spark.sql("SELECT id, score FROM stackoverflow ORDER BY score DESC LIMIT 5")
+    top5Scores.show()
+
+    // Query 2: top scores with tag
+    val top5ScoresWithTag = spark.sql("""
+        SELECT id, score, tag
+        FROM stackoverflow
+        WHERE tag IS NOT NULL
+        ORDER BY score DESC
+        LIMIT 5
+      """)
+    top5ScoresWithTag.show()
+
+    // Query 3: most popular tags
+    val popularTags = spark.sql("""
+      SELECT tag, COUNT(*) as frequency
+      FROM stackoverflow
+      WHERE tag IS NOT NULL
+      GROUP BY tag
+      ORDER BY frequency DESC
+      LIMIT 10
+    """)
+    popularTags.show()
 
 
     val programElapsedTime = (System.nanoTime() - programStartTime) / 1e9
