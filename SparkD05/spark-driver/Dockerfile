@@ -35,6 +35,6 @@ COPY spark-driver/scala-library-2.12.8.jar /opt/spark/jars
 COPY spark-driver/spark-core_2.12-3.0.1.jar /opt/spark/jars
 
 # Copy the built JAR file from the build stage
-COPY --from=build /app/target/scala-*/*.jar /opt/spark/app-jars/
+COPY --from=build /app/target/scala-*/*.jar /opt/spark/app-jars/SparkDO5.jar
 
 ENTRYPOINT ["/opt/entrypoint.sh"]

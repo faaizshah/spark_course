@@ -14,23 +14,23 @@ lazy val root = (project in file("."))
     name := "SparkD05",
     idePackagePrefix := Some("polytech.umontpellier.fr"),
     libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-sql" % sparkVersion,
-      "org.apache.spark" %% "spark-core" % sparkVersion,
-      "org.apache.spark" %% "spark-mllib" % sparkVersion,
-      "org.apache.spark" %% "spark-streaming" % sparkVersion,
-      "org.apache.spark" %% "spark-hive" % sparkVersion,
-      "org.apache.spark" %% "spark-graphx" % sparkVersion,
-      "org.apache.spark" % "spark-streaming_2.12" % sparkVersion,
-      "org.apache.spark" % "spark-streaming-kafka-0-10_2.12" % sparkVersion,
-      "org.mongodb.spark" %% "mongo-spark-connector" % mongodbSparkConnectorVersion,
-      "org.apache.kafka" %% "kafka-streams-scala" % kafkaVer,
-      "org.apache.hadoop" % "hadoop-client" % sparkVersion,
-      "org.apache.hadoop" % "hadoop-aws" % sparkVersion,
-      "org.apache.hadoop" % "hadoop-common" %sparkVersion,
-      "mysql" % "mysql-connector-java" % mysqlVersion,
-      "io.minio" % "spark-select_2.11" % minioSparkSelectVersion,
-      "com.amazonaws" % "aws-java-sdk-bundle" % "1.11.271",
-      "com.databricks" %% "spark-xml" % "0.18.0"
+      "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
+      "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
+      "org.apache.spark" %% "spark-mllib" % sparkVersion % "provided",
+      "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided",
+      "org.apache.spark" %% "spark-hive" % sparkVersion % "provided",
+      "org.apache.spark" %% "spark-graphx" % sparkVersion % "provided",
+      "org.apache.spark" % "spark-streaming_2.12" % sparkVersion % "provided",
+      "org.apache.spark" % "spark-streaming-kafka-0-10_2.12" % sparkVersion % "provided",
+      "org.mongodb.spark" %% "mongo-spark-connector" % mongodbSparkConnectorVersion % "provided",
+      "org.apache.kafka" %% "kafka-streams-scala" % kafkaVer % "provided",
+      "org.apache.hadoop" % "hadoop-client" % sparkVersion % "provided",
+      "org.apache.hadoop" % "hadoop-aws" % sparkVersion % "provided",
+      "org.apache.hadoop" % "hadoop-common" %sparkVersion % "provided",
+      "mysql" % "mysql-connector-java" % mysqlVersion % "provided",
+      "io.minio" % "spark-select_2.11" % minioSparkSelectVersion % "provided",
+      "com.amazonaws" % "aws-java-sdk-bundle" % "1.11.271" % "provided",
+      "com.databricks" %% "spark-xml" % "0.18.0" % "provided"
     )
   )
 
@@ -43,3 +43,5 @@ assembly / assemblyMergeStrategy := {
   case "application.conf" => MergeStrategy.concat
   case x => MergeStrategy.first
 }
+
+
