@@ -34,6 +34,7 @@ lazy val root = (project in file("."))
     )
   )
 
+libraryDependencies += "org.apache.spark" %% "spark-mllib" % "3.5.1"
 // sbt-assembly settings to create jar of project
 // Reference: https://github.com/sbt/sbt-assembly
 
@@ -43,5 +44,4 @@ assembly / assemblyMergeStrategy := {
   case "application.conf" => MergeStrategy.concat
   case x => MergeStrategy.first
 }
-
 
