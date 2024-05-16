@@ -3,42 +3,38 @@ package polytech.umontpellier.fr
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.dsl.expressions.StringToAttributeConversionHelper
-import org.apache.spark.sql.functions.udf
+import org.apache.spark.sql.functions.{col, udf}
 
 object MongoDB_Yann_Pomie {
   def main(args: Array[String]): Unit = {
 
     val programStartTime = System.nanoTime()
-
     Logger.getLogger("org").setLevel(Level.ERROR)
 
+    //val MONGODB_URI = "mongodb://root:do5password@localhost:27017"
+    val MONGODB_URI ="mongodb://root:do5password@mongodb-0.mongodb-headless.spark-do5.svc.cluster.local:27017"
+    // Creating Spark Session
     val spark = SparkSession.builder
-      .appName("MongoDB connector")
-      .master("local[*]")
-      .config("spark.mongodb.read.connection.uri", "mongodb://root:my_secret_password@127.0.0.1:27017")
-      .config("spark.mongodb.write.connection.uri", "mongodb://root:my_secret_password@127.0.0.1:27017")
+      .appName("Mongodb Connection Test")
+      .config("spark.mongodb.read.connection.uri", MONGODB_URI)
+      .config("spark.mongodb.write.connection.uri", MONGODB_URI)
+      // .master("local[*]")
       .getOrCreate()
 
+    // Set log level to Error
     spark.sparkContext.setLogLevel("ERROR")
-
-    val df = spark.read
-      .format("mongodb")
-      .option("database", "do5")
-      .option("collection", "X")
+    val df = spark.read.format("mongodb")
+      .option("database","test")
+      .option("collection","X")
       .load()
 
+    println("\n" + df.count)
     df.printSchema()
     df.select("id", "text").show(5)
 
-    val threats = df.select("id", "username", "text").filter("text like \"%threat%\"")
-
-    threats.show
-
-
-    threats.write.format("mongodb").mode("overwrite")
-      .option("database", "do5")
-      .option("collection", "threats")
-      .save()
+    val df1 = df.where(col("text").contains("threat"))
+    println(df1.count())
+    df1.select("text").show(5, truncate = false)
 
     val programElapsedTime = (System.nanoTime() - programStartTime) / 1e9
     println(s"\nProgram execution time: $programElapsedTime seconds")
