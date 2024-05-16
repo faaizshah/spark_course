@@ -16,6 +16,8 @@ COPY src /app/src
 # Build the projects
 RUN sbt clean assembly
 
+RUN ls -lah /app/target/scala-*/
+
 # Stage 2: Build the final image
 FROM ghcr.io/googlecloudplatform/spark-operator:v1beta2-1.3.8-3.1.1 AS operator
 #FROM ${SPARK_IMAGE} AS operator
