@@ -6,7 +6,7 @@ metadata:
 spec:
   type: Scala
   mode: cluster
-  image: "ttl.sh/522cdfbc-0a3d-43a9-8e45-a5b5ea98b756:4h"
+  image: "ttl.sh/e2221195-79b0-4eb8-b731-1aa316c0d250:6h"
 #  mainClass: polytech.umontpellier.fr.HelloWorld
 #  mainClass: polytech.umontpellier.fr.SimpleApp
 #  mainClass: Mongo

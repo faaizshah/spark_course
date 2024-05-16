@@ -13,7 +13,7 @@ object PostgresSpark {
     val jdbcPort = 5432
     val jdbcDatabase = "postgres"
     val jdbcUsername = "postgres"
-    val jdbcPassword = "postgres"
+    val jdbcPassword = "h9OKUKnlYw"
 
     val jdbcUrl =
       s"jdbc:postgresql://${jdbcHostname}:${jdbcPort}/${jdbcDatabase}"
@@ -62,14 +62,16 @@ object PostgresSpark {
     df.printSchema()
     df.show(5)
 
+    // import the dataset
     df.write
-      .mode("append")
+      .mode("overwrite")
       .jdbc(jdbcUrl, writeTableName, connectionProperties)
 
+    // then read it back
     val newdf = spark.read
       .jdbc(jdbcUrl, writeTableName, connectionProperties)
 
-    println(newdf.count())
+    println(s"\nCount of records in postgres connection: ${df.count()}")
     newdf.show(5)
 
     val programElapsedTime = (System.nanoTime() - programStartTime) / 1e9
