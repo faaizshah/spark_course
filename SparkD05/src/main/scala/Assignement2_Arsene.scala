@@ -26,11 +26,11 @@ object Assignement2_Arsene {
     val wordB = "England"
 
     val numAs = df
-      .filter(line => line.contains(strA))
+      .filter(line => line.contains(wordA))
       .count()
 
     val numBs = df
-      .filter(line => line.contains(strB))
+      .filter(line => line.contains(wordB))
       .count()
 
     println(s"\nLines with word $wordA: $numAs, Lines with word $wordB: $numBs")
