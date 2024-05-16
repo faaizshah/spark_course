@@ -14,8 +14,7 @@ COPY project /app/project
 COPY src /app/src
 
 # Build the projects
-RUN sbt clean assembly
-
+RUN sbt clean package
 # Stage 2: Build the final image
 FROM ghcr.io/googlecloudplatform/spark-operator:v1beta2-1.3.8-3.1.1 AS operator
 #FROM ${SPARK_IMAGE} AS operator
@@ -36,6 +35,6 @@ COPY spark-driver/scala-library-2.12.8.jar /opt/spark/jars
 COPY spark-driver/spark-core_2.12-3.0.1.jar /opt/spark/jars
 
 # Copy the built JAR file from the build stage
-COPY --from=build /app/target/scala-*/sparkdo5-assembly-*.jar /opt/spark/app-jars/
+COPY --from=build /app/target/scala-*/*.jar /opt/spark/app-jars/
 
 ENTRYPOINT ["/opt/entrypoint.sh"]
