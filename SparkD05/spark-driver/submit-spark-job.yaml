@@ -9,8 +9,9 @@ spec:
   image: "spark-driver:3.1.1"
   imagePullPolicy: Never
   #mainClass: polytech.umontpellier.fr.HelloWorld
-  mainClass: polytech.umontpellier.fr.SimpleApp
+  #mainClass: polytech.umontpellier.fr.SimpleApp
   #mainClass: polytech.umontpellier.fr.SparkHelloWorld
+  mainClass: polytech.umontpellier.fr.StackOverflowDataAnalysisOnKube
   #mainClass: polytech.umontpellier.fr.MongoDB_Yann_Pomie
 
   mainApplicationFile: "local:///opt/spark/app-jars/SparkD05-assembly-0.1.0-SNAPSHOT.jar"
