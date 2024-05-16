@@ -35,6 +35,7 @@ lazy val root = (project in file("."))
   )
 
 libraryDependencies += "org.apache.spark" %% "spark-mllib" % "3.5.1"
+libraryDependencies += "org.postgresql" % "postgresql" % "42.2.18"
 // sbt-assembly settings to create jar of project
 // Reference: https://github.com/sbt/sbt-assembly
 
