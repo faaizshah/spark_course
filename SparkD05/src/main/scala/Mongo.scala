@@ -6,11 +6,11 @@ object Mongo {
      */
     import org.apache.spark.sql.SparkSession
 
-    val url = "mongodb://root:password@localhost:27017"
+    val url = "mongodb://root:do5password@mongodb-0.mongodb-headless:27017"
 
     val spark = SparkSession
       .builder()
-      .master("local")
+//      .master("local")
       .appName("MongoSparkConnectorIntro")
       .config("spark.mongodb.read.connection.uri", url)
       .config("spark.mongodb.write.connection.uri", url)
@@ -26,12 +26,12 @@ object Mongo {
 //    val limited = df.drop("_id").limit(500)
 
     val found = df.filter(df("text").contains("threat"))
+    println(s"Number of tweets containing the word 'threat': ${found.count()}")
     found.write
       .format("mongodb")
-      .mode("overwrite")
+      .mode("append")
       .option("database", "do5")
       .option("collection", "twitter-threats")
       .save()
-    println(s"Number of tweets containing the word 'threat': ${found.count()}")
   }
 }

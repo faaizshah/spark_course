@@ -1,0 +1,79 @@
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: spark-application-with-sbt
+  namespace: spark-do5
+spec:
+  type: Scala
+  mode: cluster
+  image: "ttl.sh/a69c84d0-d701-4d62-80ed-dfd9bc93cb6c:4h"
+#  mainClass: polytech.umontpellier.fr.HelloWorld
+#  mainClass: polytech.umontpellier.fr.SimpleApp
+#  mainClass: Mongo
+#  mainClass: polytech.umontpellier.fr.StackOverflowDataAnalysisOnKube
+  mainClass: StackOverflowDataAnalysisOnKube
+
+  mainApplicationFile: "local:///opt/spark/app-jars/SparkD05-assembly-0.1.0-SNAPSHOT.jar"
+  sparkVersion: "3.1.1"
+  sparkConf:
+    #    spark.hadoop.fs.s3a.access.key: "${s3-config:S3_ACCESS_KEY}"
+    #    spark.hadoop.fs.s3a.secret.key: "${s3-config:S3_SECRET_KEY}"
+    #    spark.hadoop.fs.s3a.endpoint: "http://${MINIO_SERVICE_HOST}:${MINIO_PORT}"
+    spark.hadoop.fs.s3a.access.key: "admin"
+    spark.hadoop.fs.s3a.secret.key: "do5password"
+    spark.hadoop.fs.s3a.endpoint: "http://10.42.2.12:9000"
+    spark.hadoop.fs.s3a.impl: "org.apache.hadoop.fs.s3a.S3AFileSystem"
+    spark.hadoop.fs.s3a.block.size: "67108864"
+    fs.s3a.block.size: "67108864"
+    spark.hadoop.fs.s3a.multipart.size: "67108864"
+    fs.s3a.multipart.size: "67108864"
+    spark.hadoop.fs.s3a.multipart.threshold: "67108864"
+    fs.s3a.multipart.threshold: "67108864"
+
+
+    spark.eventLog.enabled: "true"
+    spark.eventLog.overwrite: "true"
+    spark.eventLog.dir: "s3a://sparkdo5/spark-events"
+    spark.history.fs.logDirectory: "s3a://sparkdo5/spark-logs"
+    spark.history.fs.update.interval: "30s"
+    spark.driver.log.persistToDfs.enabled: "true"
+    #spark.driver.log.dfsDir: "s3a://spark/spark-driver-logs"
+    spark.streaming.receiver.writeAheadLog.enable: "true"
+    spark.streaming.receiver.writeAheadLog.closeFileAfterWrite: "true"
+
+  restartPolicy:
+    type: Never
+  volumes:
+    - name: "test-volume"
+      hostPath:
+        path: "/tmp"
+        type: Directory
+      configMap:
+        name: s3-config
+  #    - name: "spark-events"
+  #      hostPath:
+  #        path: "/tmp/spark-events"
+  #        type: Directory
+  driver:
+    cores: 1
+    coreLimit: "1200m"
+    memory: "2g"
+    labels:
+      version: 3.1.1
+    serviceAccount: spark
+    volumeMounts:
+      - name: "test-volume"
+        mountPath: "/tmp"
+  #      - name: "spark-events"
+  #        mountPath: "/tmp/spark-events"
+  executor:
+    cores: 2
+    instances: 4
+    memory: "1024m"
+    labels:
+      version: 3.1.1
+    volumeMounts:
+      - name: "test-volume"
+        mountPath: "/tmp"
+#      - name: "spark-events"
+#        mountPath: "/tmp/spark-events"

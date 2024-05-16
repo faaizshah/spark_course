@@ -1,6 +1,6 @@
 # Stage 1: Build the Spark application using SBT
 FROM openjdk:8-slim as build
-ENV SBT_VERSION 1.6.2
+ENV SBT_VERSION 1.10.0
 WORKDIR /app
 
 # Install SBT
@@ -36,6 +36,6 @@ COPY spark-driver/scala-library-2.12.8.jar /opt/spark/jars
 COPY spark-driver/spark-core_2.12-3.0.1.jar /opt/spark/jars
 
 # Copy the built JAR file from the build stage
-COPY --from=build /app/target/scala-*/sparkdo5-assembly-*.jar /opt/spark/app-jars/
+COPY --from=build /app/target/scala-*/SparkD05-assembly-*.jar /opt/spark/app-jars/
 
 ENTRYPOINT ["/opt/entrypoint.sh"]
