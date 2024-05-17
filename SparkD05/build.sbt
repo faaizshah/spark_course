@@ -32,7 +32,7 @@ lazy val root = (project in file("."))
       "io.minio" % "spark-select_2.11" % minioSparkSelectVersion,
       "com.amazonaws" % "aws-java-sdk-bundle" % "1.11.271",
       "com.databricks" %% "spark-xml" % "0.18.0",
-      "org.postgresql" % "postgresql" % "42.5.4",
+      "org.postgresql" % "postgresql" % "42.7.3",
     )
   )
 
