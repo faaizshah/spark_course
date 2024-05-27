@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   mongodb:
@@ -12,6 +12,20 @@ services:
     volumes:
       - mongo:/data/db
 
+  postgres:
+    image: postgres:latest
+    container_name: postgresDO5
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres:/var/lib/postgresql
+    ports:
+      - '5432:5432'
+
+
 volumes:
   mongo:
+  postgres:
 
