@@ -29,10 +29,8 @@ object StackOverflow {
     df.printSchema()
     df.show(5)
 
-
     val programElapsedTime = (System.nanoTime() - programStartTime) / 1e9
     println(s"\nProgram execution time: $programElapsedTime seconds")
     spark.stop()
   }
 }
-

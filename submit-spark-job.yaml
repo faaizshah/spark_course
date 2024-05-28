@@ -1,0 +1,73 @@
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: spark-application-with-sbt
+  namespace: spark-do5
+spec:
+  type: Scala
+  mode: cluster
+  image: "spark-driver:3.1.1"
+  imagePullPolicy: Never
+  # mainClass: polytech.umontpellier.fr.HelloWorld
+  # mainClass: polytech.umontpellier.fr.SimpleApp
+  # mainClass: polytech.umontpellier.fr.SparkHelloWorld
+  # mainClass: polytech.umontpellier.fr.StackOverflowDataAnalysisOnKube
+  mainClass: polytech.umontpellier.fr.PostgreSQL
+
+  mainApplicationFile: "local:///opt/spark/app-jars/SparkD05-assembly-0.1.0-SNAPSHOT.jar"
+  sparkVersion: "3.1.1"
+  sparkConf:
+    #    spark.hadoop.fs.s3a.access.key: "${s3-config:S3_ACCESS_KEY}"
+    #    spark.hadoop.fs.s3a.secret.key: "${s3-config:S3_SECRET_KEY}"
+    #    spark.hadoop.fs.s3a.endpoint: "http://${MINIO_SERVICE_HOST}:${MINIO_PORT}"
+    spark.hadoop.fs.s3a.access.key: "admin"
+    spark.hadoop.fs.s3a.secret.key: "do5password"
+    spark.hadoop.fs.s3a.endpoint: "http://192.168.194.39:9000"
+    spark.hadoop.fs.s3a.impl: "org.apache.hadoop.fs.s3a.S3AFileSystem"
+    spark.eventLog.enabled: "true"
+    spark.eventLog.overwrite: "true"
+    spark.eventLog.dir: "s3a://sparkdo5/spark-events"
+    spark.history.fs.logDirectory: "s3a://sparkdo5/spark-logs"
+    spark.history.fs.update.interval: "30s"
+    spark.driver.log.persistToDfs.enabled: "true"
+    #spark.driver.log.dfsDir: "s3a://spark/spark-driver-logs"
+    spark.streaming.receiver.writeAheadLog.enable: "true"
+    spark.streaming.receiver.writeAheadLog.closeFileAfterWrite: "true"
+
+  restartPolicy:
+    type: Never
+  volumes:
+    - name: "test-volume"
+      hostPath:
+        path: "/tmp"
+        type: Directory
+      configMap:
+        name: s3-config
+  #    - name: "spark-events"
+  #      hostPath:
+  #        path: "/tmp/spark-events"
+  #        type: Directory
+  driver:
+    cores: 1
+    coreLimit: "1200m"
+    memory: "2g"
+    labels:
+      version: 3.1.1
+    serviceAccount: spark
+    volumeMounts:
+      - name: "test-volume"
+        mountPath: "/tmp"
+  #      - name: "spark-events"
+  #        mountPath: "/tmp/spark-events"
+  executor:
+    cores: 1
+    instances: 8
+    memory: "1024m"
+    labels:
+      version: 3.1.1
+    volumeMounts:
+      - name: "test-volume"
+        mountPath: "/tmp"
+#      - name: "spark-events"
+#        mountPath: "/tmp/spark-events"
+
