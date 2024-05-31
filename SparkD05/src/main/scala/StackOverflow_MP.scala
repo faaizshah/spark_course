@@ -2,6 +2,9 @@ package polytech.umontpellier.fr
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.types.IntegerType
+import org.apache.spark.sql.types.StringType
 
 object StackOverflow {
   def main(args: Array[String]): Unit = {
@@ -20,10 +23,23 @@ object StackOverflow {
 
     spark.sparkContext.setLogLevel("ERROR")
 
+    val schema = new StructType()
+    .add("postTypeId", IntegerType, nullable = true)
+    .add("id", IntegerType, nullable = true)
+    .add("acceptedAnswer", StringType, nullable = true)
+    .add("parentId", IntegerType, nullable = true)
+    .add("score", IntegerType, nullable = true)
+    .add("tag", StringType, nullable = true)
+
+    import spark.implicits._
+
+
     val df = spark.read
       .option("header", "false")
+      .schema(schema)
       .option("inferSchema", "true")
       .csv(csvDataFile)
+
 
     println(s"\nCount of records in CSV file: ${df.count()}")
     df.printSchema()
