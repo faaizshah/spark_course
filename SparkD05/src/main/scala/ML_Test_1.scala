@@ -58,27 +58,3 @@ object ML_Test_1 {
   }
 }
 
-
-//    //val logData = spark.read.textFile(logFile).cache()
-//
-//    import spark.implicits._
-//    case class Flight(DEST_COUNTRY_NAME: String,
-//                      ORIGIN_COUNTRY_NAME: String,
-//                      count: BigInt)
-//    val flightsDF = spark.read
-//      .parquet("data/flight-data/parquet/2010-summary.parquet/")
-//    flightsDF.printSchema()
-//    println(flightsDF.count())
-
-//
-//
-//    val simpleML = spark.read.parquet("data/multiclass-classification")
-//    simpleML.printSchema()
-//    println(simpleML.count())
-//
-//    simpleML.show()
-
-//val flights = flightsDF.as[Flight]
-
-
-
