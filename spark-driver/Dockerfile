@@ -1,0 +1,41 @@
+# Stage 1: Build the Spark application using SBT
+FROM openjdk:8-slim as build
+ENV SBT_VERSION 1.6.2
+WORKDIR /app
+
+# Install SBT
+RUN apt-get update && apt-get install -y curl
+RUN curl -fsL https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz | tar xfz - -C /usr/local
+ENV PATH /usr/local/sbt/bin:${PATH}
+
+# Copy project files
+COPY build.sbt /app/
+COPY project /app/project
+COPY src /app/src
+
+# Build the projects
+RUN sbt clean assembly
+
+# Stage 2: Build the final image
+FROM ghcr.io/googlecloudplatform/spark-operator:v1beta2-1.3.8-3.1.1 AS operator
+#FROM ${SPARK_IMAGE} AS operator
+#ARG SPARK_IMAGE
+USER root
+
+# Minio-jars
+COPY hadoop-aws-2.7.4.jar /opt/spark/jars
+COPY aws-java-sdk-1.7.4.jar /opt/spark/jars
+
+##### Kafka Structured Streaming jars
+COPY commons-pool2-2.6.2.jar /opt/spark/jars
+COPY kafka-clients-2.6.0.jar /opt/spark/jars
+COPY spark-sql-kafka-0-10_2.12-3.1.1.jar /opt/spark/jars
+COPY spark-token-provider-kafka-0-10_2.12-3.1.1.jar /opt/spark/jars
+COPY scala-reflect-2.12.8.jar /opt/spark/jars
+COPY scala-library-2.12.8.jar /opt/spark/jars
+COPY spark-core_2.12-3.0.1.jar /opt/spark/jars
+
+# Copy the built JAR file from the build stage
+COPY --from=build /app/target/scala-*/sparkdo5-assembly-*.jar /opt/spark/app-jars/
+
+ENTRYPOINT ["/opt/entrypoint.sh"]
